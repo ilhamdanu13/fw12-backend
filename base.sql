@@ -188,3 +188,7 @@ CREATE TABLE "subscribers" (
 
 INSERT INTO subscribers ("email")
 VALUES ('admin@gmail.com');
+
+UPDATE "movieSchedules" SET "startDate"='2022-12-15' WHERE id='1';
+
+UPDATE "movieSchedules" SET "endDate"='2023-01-25' WHERE id='1';
