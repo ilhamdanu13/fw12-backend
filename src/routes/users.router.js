@@ -1,21 +1,18 @@
 // define method
 const usersRouter = require("express").Router();
 
-const { readAllUsers, createUser, updateUser, deleteUser } = require("../controllers/users.controller");
+const { readAllUsers, createUser, updateUser, deleteUser, readUser } = require("../controllers/users.controller");
 
-// access users controller
-usersRouter.get("/", readAllUsers);
+usersRouter.get("/", readAllUsers); // query String
 
-// post method to access users controller
-usersRouter.post("/", createUser);
+usersRouter.get("/:id", readUser);
 
-// update method to access users controller
-usersRouter.patch("/", updateUser);
+usersRouter.post("/", createUser); // query String, Body
 
-// delete method
-usersRouter.delete("/", deleteUser);
+usersRouter.patch("/:id", updateUser); // query String, Body
 
-// export router so that can use in index.js
+usersRouter.delete("/:id", deleteUser); // query String
+
 module.exports = usersRouter;
 
 // install nodemon to update servers.

@@ -58,7 +58,7 @@ INSERT INTO genre ("name")
 VALUES ('Action');
 SELECT * from genre;
 
-CREATE TABLE "moviegenre" (
+CREATE TABLE "movieGenre" (
     "id"            INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     "movieId"       INT,
     "genreId"       INT,
@@ -78,7 +78,7 @@ CREATE TABLE "casts" (
 INSERT INTO casts ("name")
 VALUES ('Keanu Reeves');
 
-CREATE TABLE "moviecasts" (
+CREATE TABLE "movieCasts" (
     "id"            INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     "movieId"       INT,
     "castsId"       INT,
@@ -192,3 +192,5 @@ VALUES ('admin@gmail.com');
 UPDATE "movieSchedules" SET "startDate"='2022-12-15' WHERE id='1';
 
 UPDATE "movieSchedules" SET "endDate"='2023-01-25' WHERE id='1';
+
+ALTER TABLE moviegenre RENAME TO movieGenres;
