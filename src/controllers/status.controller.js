@@ -1,12 +1,21 @@
 const statusModel = require("../models/status.model");
 const errorHandler = require("../helpers/errorHandler.helper");
+const filter = require("../helpers/filter.helper");
 
 exports.readAllStatus = (req, res) => {
-  statusModel.selectAllStatus((err, data) => {
-    return res.status(200).json({
-      success: true,
-      message: "List all status",
-      results: data?.rows,
+  const sortable = ["name", "createdAt"];
+  filter(req.query, sortable, statusModel.selectCountAllStatus, res, (filter, pageInfo) => {
+    statusModel.selectAllStatus(filter, (err, data) => {
+      if (err) {
+        console.log(err);
+        return errorHandler(err, res);
+      }
+      return res.status(200).json({
+        success: true,
+        message: "List all status",
+        pageInfo,
+        results: data.rows,
+      });
     });
   });
 };

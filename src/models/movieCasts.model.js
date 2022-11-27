@@ -18,7 +18,7 @@ exports.insertMovieCasts = (data, cb) => {
 };
 
 exports.updateMovieCasts = (data, cb) => {
-  const sql = 'UPDATE "movieCasts" SET "movieId" = $1, "castsId" = $2 WHERE "id" = $3 RETURNING *';
+  const sql = `UPDATE "movieCasts" SET "movieId" = COALESCE(NULLIF($1, ''), "movieId"), "castsId" = COALESCE(NULLIF($2, ''), "castsId") WHERE "id" = $3 RETURNING *`;
   const value = [data.body.movieId, data.body.castsId, data.params.id];
   db.query(sql, value, cb);
 };

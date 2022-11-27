@@ -1,10 +1,16 @@
 const db = require("../helpers/db.helper");
 
-exports.selectAllSubscriber = (cb) => {
-  const sql = 'SELECT * FROM "subscribers"';
-  db.query(sql, cb);
+exports.selectAllSubscriber = (filter, cb) => {
+  const sql = `SELECT * FROM "subscribers" WHERE "email" LIKE $1 ORDER BY "${filter.sortBy}" ${filter.sort} LIMIT $2 OFFSET $3`;
+  const value = [`%${filter.search}%`, filter.limit, filter.offset];
+  db.query(sql, value, cb);
 };
 
+exports.selectCountAllSubscriber = (filter, cb) => {
+  const sql = 'SELECT COUNT("email") AS "totalData" FROM "subscribers" WHERE "email" LIKE $1';
+  const value = [`%${filter.search}%`];
+  db.query(sql, value, cb);
+};
 exports.selectSubscriber = (id, cb) => {
   const sql = 'SELECT * FROM "subscribers" WHERE id = $1';
   const value = [id];
@@ -18,7 +24,7 @@ exports.insertSubscriber = (data, cb) => {
 };
 
 exports.updateSubscriber = (data, cb) => {
-  const sql = 'UPDATE "subscribers" SET "email" = $1 WHERE "id" = $2 RETURNING *';
+  const sql = `UPDATE "subscribers" SET "email" = COALESCE(NULLIF($1, ''), "email") WHERE "id" = $2 RETURNING *`;
   const value = [data.body.email, data.params.id];
   db.query(sql, value, cb);
 };

@@ -1,12 +1,20 @@
 const transactionsModel = require("../models/transactions.model");
 const errorHandler = require("../helpers/errorHandler.helper");
+const filter = require("../helpers/filter.helper");
 
 exports.readAllTransactions = (req, res) => {
-  transactionsModel.selectAllTransactions((err, data) => {
-    return res.status(200).json({
-      success: true,
-      message: "List all transactions",
-      results: data?.rows,
+  const sortable = ["bookingDate", "fullName", "email", "phoneNumber"];
+  filter(req.query, sortable, transactionsModel.selectCountAllTransactions, res, (filter, pageInfo) => {
+    transactionsModel.selectAllTransactions(filter, (err, data) => {
+      if (err) {
+        return errorHandler(err, res);
+      }
+      return res.status(200).json({
+        success: true,
+        message: "List all transactions",
+        pageInfo,
+        results: data?.rows,
+      });
     });
   });
 };

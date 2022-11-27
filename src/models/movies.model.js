@@ -1,8 +1,15 @@
 const db = require("../helpers/db.helper");
 
-exports.selectAllMovies = (cb) => {
-  const sql = "SELECT * FROM movies";
-  db.query(sql, cb);
+exports.selectAllMovies = (filter, cb) => {
+  const sql = `SELECT * FROM "movies" WHERE "title" LIKE $1 ORDER BY "${filter.sortBy}" ${filter.sort} LIMIT $2 OFFSET $3`;
+  const value = [`%${filter.search}%`, filter.limit, filter.offset];
+  db.query(sql, value, cb);
+};
+
+exports.selectCountAllMovies = (filter, cb) => {
+  const sql = 'SELECT COUNT("title") AS "totalData" FROM "movies" WHERE "title" LIKE $1';
+  const value = [`%${filter.search}%`];
+  db.query(sql, value, cb);
 };
 
 exports.selectMovies = (id, cb) => {
@@ -18,7 +25,7 @@ exports.insertMovies = (data, cb) => {
 };
 
 exports.updateMovies = (data, cb) => {
-  const sql = 'UPDATE "movies" SET "title" = $1, "picture" = $2, "releaseDate" = $3, "director" = $4, "duration" = $5, "synopsis" = $6 WHERE "id" = $7 RETURNING *';
+  const sql = `UPDATE "movies" SET "title" = COALESCE(NULLIF($1, ''), "title"), "picture" = COALESCE(NULLIF($2, ''), "picture"), "releaseDate" = COALESCE(NULLIF($3, ''), "releaseDate"), "director" = COALESCE(NULLIF($4, ''), "director"), "duration" = COALESCE(NULLIF($5, ''), "duration"), "synopsis" = COALESCE(NULLIF($6, ''), "synopsis") WHERE "id" = $7 RETURNING *`;
   const value = [data.body.title, data.body.picture, data.body.releaseDate, data.body.director, data.body.duration, data.body.synopsis, data.params.id];
   db.query(sql, value, cb);
 };

@@ -194,3 +194,18 @@ UPDATE "movieSchedules" SET "startDate"='2022-12-15' WHERE id='1';
 UPDATE "movieSchedules" SET "endDate"='2023-01-25' WHERE id='1';
 
 ALTER TABLE moviegenre RENAME TO movieGenres;
+
+-- Add UNIQUE column
+ALTER TABLE "users" ADD CONSTRAINT "email" UNIQUE ("email");
+
+-- Join Tabel--
+SELECT m.title, g.name as genre FROM "movies" m 
+JOIN "movieGenre" mg ON mg."movieId" = m.id
+JOIN "genre" g ON g.id = mg."genreId";
+
+-- Add contraint
+ALTER TABLE "movieGenre" ADD CONSTRAINT "fk_movieId" FOREIGN KEY ("movieId") REFERENCES movies (id)
+ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE "movieGenre" ADD CONSTRAINT "fk_genreId" FOREIGN KEY ("genreId") REFERENCES genre (id)
+ON DELETE CASCADE ON UPDATE CASCADE;

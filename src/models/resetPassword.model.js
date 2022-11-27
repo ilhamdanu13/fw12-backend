@@ -1,8 +1,15 @@
 const db = require("../helpers/db.helper");
 
-exports.selectAllResetPassword = (cb) => {
-  const sql = 'SELECT * FROM "resetPassword"';
-  db.query(sql, cb);
+exports.selectAllResetPassword = (filter, cb) => {
+  const sql = `SELECT * FROM "resetPassword" WHERE "email" LIKE $1 ORDER BY "${filter.sortBy}" ${filter.sort} LIMIT $2 OFFSET $3`;
+  const value = [`%${filter.search}%`, filter.limit, filter.offset];
+  db.query(sql, value, cb);
+};
+
+exports.selectCountAllResetPassword = (filter, cb) => {
+  const sql = 'SELECT COUNT("email") AS "totalData" FROM "resetPassword" WHERE "email" LIKE $1';
+  const value = [`%${filter.search}%`];
+  db.query(sql, value, cb);
 };
 
 exports.selectResetPassword = (id, cb) => {
@@ -18,7 +25,7 @@ exports.insertResetPassword = (data, cb) => {
 };
 
 exports.updateResetPassword = (data, cb) => {
-  const sql = 'UPDATE "resetPassword" SET "email" = $1, "userId" = $2, "code" = $3 WHERE "id" = $4 RETURNING *';
+  const sql = `UPDATE "resetPassword" SET "email" = COALESCE(NULLIF($1, ''), "email"), "userId" = COALESCE(NULLIF($2, ''), "userId"), "code" = COALESCE(NULLIF($3, ''), "code") WHERE "id" = $4 RETURNING *`;
   const value = [data.body.email, data.body.userId, data.body.code, data.params.id];
   db.query(sql, value, cb);
 };

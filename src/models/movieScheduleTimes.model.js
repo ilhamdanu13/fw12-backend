@@ -18,7 +18,7 @@ exports.insertMovieScheduleTimes = (data, cb) => {
 };
 
 exports.updateMovieScheduleTimes = (data, cb) => {
-  const sql = 'UPDATE "movieScheduleTimes" SET "time" = $1 WHERE "id" = $2 RETURNING *';
+  const sql = `UPDATE "movieScheduleTimes" SET "time" = COALESCE(NULLIF($1, ''), "time") WHERE "id" = $2 RETURNING *`;
   const value = [data.body.time, data.params.id];
   db.query(sql, value, cb);
 };

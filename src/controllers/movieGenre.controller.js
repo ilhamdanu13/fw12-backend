@@ -24,11 +24,12 @@ exports.readMovieGenre = (req, res) => {
 exports.createMovieGenre = (req, res) => {
   movieGenreModel.insertMovieGenre(req.body, (err, data) => {
     if (err) {
+      console.log(err);
       return errorHandler(err, res);
     }
     return res.status(200).json({
       success: true,
-      message: "Movie genre created successfully",
+      message: "Add movie genre successfully",
       results: data.rows[0],
     });
   });

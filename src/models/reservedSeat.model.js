@@ -1,8 +1,15 @@
 const db = require("../helpers/db.helper");
 
-exports.selectAllReservedSeat = (cb) => {
-  const sql = 'SELECT * FROM "reservedSeat"';
-  db.query(sql, cb);
+exports.selectAllReservedSeat = (filter, cb) => {
+  const sql = `SELECT * FROM "reservedSeat" WHERE "seatNum" LIKE $1 ORDER BY "${filter.sortBy}" ${filter.sort} LIMIT $2 OFFSET $3`;
+  const value = [`%${filter.search}%`, filter.limit, filter.offset];
+  db.query(sql, value, cb);
+};
+
+exports.selectCountAllReservedSeat = (filter, cb) => {
+  const sql = 'SELECT COUNT("seatNum") AS "totalData" FROM "reservedSeat" WHERE "seatNum" LIKE $1';
+  const value = [`%${filter.search}%`];
+  db.query(sql, value, cb);
 };
 
 exports.selectReservedSeat = (id, cb) => {
@@ -18,7 +25,7 @@ exports.insertReservedSeat = (data, cb) => {
 };
 
 exports.updateReservedSeat = (data, cb) => {
-  const sql = 'UPDATE "reservedSeat" SET "seatNum" = $1 WHERE "id" = $2 RETURNING *';
+  const sql = `UPDATE "reservedSeat" SET "seatNum" = COALESCE(NULLIF($1, ''), "seatNum") WHERE "id" = $2 RETURNING *`;
   const value = [data.body.seatNum, data.params.id];
   db.query(sql, value, cb);
 };

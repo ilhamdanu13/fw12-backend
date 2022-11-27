@@ -1,12 +1,20 @@
 const cinemasModel = require("../models/cinemas.model");
 const errorHandler = require("../helpers/errorHandler.helper");
+const filter = require("../helpers/filter.helper");
 
 exports.readAllCinemas = (req, res) => {
-  cinemasModel.selectAllCinemas((err, data) => {
-    return res.status(200).json({
-      success: true,
-      message: "List all cinemas",
-      results: data.rows,
+  const sortable = ["name", "address", "city"];
+  filter(req.query, sortable, cinemasModel.selectCountAllCinemas, res, (filter, pageInfo) => {
+    cinemasModel.selectAllCinemas(filter, (err, data) => {
+      if (err) {
+        return errorHandler(err, res);
+      }
+      return res.status(200).json({
+        success: true,
+        message: "List all cinemas",
+        pageInfo,
+        results: data.rows,
+      });
     });
   });
 };

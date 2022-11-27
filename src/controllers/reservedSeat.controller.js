@@ -1,12 +1,20 @@
 const reservedSeatModel = require("../models/reservedSeat.model");
 const errorHandler = require("../helpers/errorHandler.helper");
+const filter = require("../helpers/filter.helper");
 
 exports.readAllReservedSeat = (req, res) => {
-  reservedSeatModel.selectAllReservedSeat((err, data) => {
-    return res.status(200).json({
-      success: true,
-      message: "List all reserved seat",
-      results: data?.rows,
+  const sortable = ["seatNum", "transactionId"];
+  filter(req.query, sortable, reservedSeatModel.selectCountAllReservedSeat, res, (filter, pageInfo) => {
+    reservedSeatModel.selectAllReservedSeat(filter, (err, data) => {
+      if (err) {
+        return errorHandler(err, res);
+      }
+      return res.status(200).json({
+        success: true,
+        message: "List all reserved seat",
+        pageInfo,
+        results: data?.rows,
+      });
     });
   });
 };

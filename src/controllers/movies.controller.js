@@ -1,12 +1,20 @@
 const moviesModel = require("../models/movies.model");
 const errorHandler = require("../helpers/errorHandler.helper");
+const filter = require("../helpers/filter.helper");
 
 exports.readAllMovies = (req, res) => {
-  moviesModel.selectAllMovies((err, data) => {
-    return res.status(200).json({
-      success: true,
-      message: "List all movie",
-      results: data.rows,
+  const sortable = ["title", "releaseDate", "duration", "director", "synopsis"];
+  filter(req.query, sortable, moviesModel.selectCountAllMovies, res, (filter, pageInfo) => {
+    moviesModel.selectAllMovies(filter, (err, data) => {
+      if (err) {
+        return errorHandler(err, res);
+      }
+      return res.status(200).json({
+        success: true,
+        message: "List all movie",
+        pageInfo,
+        results: data.rows,
+      });
     });
   });
 };

@@ -6,11 +6,17 @@ exports.insertUser = (data, cb) => {
   db.query(sql, value, cb);
 };
 
-exports.selectAllUsers = (cb) => {
-  const sql = "SELECT * FROM users";
-  return db.query(sql, cb);
+exports.selectAllUsers = (filter, cb) => {
+  const sql = `SELECT * FROM "users" WHERE "email" LIKE $1 ORDER BY "${filter.sortBy}" ${filter.sort} LIMIT $2 OFFSET $3`;
+  const value = [`%${filter.search}%`, filter.limit, filter.offset];
+  return db.query(sql, value, cb);
 };
 
+exports.selectCountAllUsers = (filter, cb) => {
+  const sql = 'SELECT COUNT("email") AS "totalData" FROM "users" WHERE "email" LIKE $1';
+  const value = [`%${filter.search}%`];
+  db.query(sql, value, cb);
+};
 exports.selectUser = (id, cb) => {
   const sql = "SELECT * FROM users WHERE id = $1";
   const value = [id];
@@ -18,8 +24,8 @@ exports.selectUser = (id, cb) => {
 };
 
 exports.updateUser = (data, cb) => {
-  const sql = 'UPDATE "users" SET "lastName" = $1 WHERE "id" = $2 RETURNING *';
-  const value = [data.body.lastName, data.params.id];
+  const sql = `UPDATE "users" SET "picture" = COALESCE(NULLIF($1, ''), "picture"), "firstName" = COALESCE(NULLIF($2, ''), "firstName"), "lastName" = COALESCE(NULLIF($3, ''), "lastName"), "phoneNumber" = COALESCE(NULLIF($4, ''), "phoneNumber"), "email" = COALESCE(NULLIF($5, ''), "email"), "password" = COALESCE(NULLIF($6, ''), "password") WHERE "id" = $7 RETURNING *`;
+  const value = [data.body.picture, data.body.firstName, data.body.lastName, data.body.phoneNumber, data.body.email, data.body.password, data.params.id];
   db.query(sql, value, cb);
 };
 

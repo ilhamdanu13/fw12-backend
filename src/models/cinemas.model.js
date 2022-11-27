@@ -1,8 +1,15 @@
 const db = require("../helpers/db.helper");
 
-exports.selectAllCinemas = (cb) => {
-  const sql = "SELECT * FROM cinemas";
-  db.query(sql, cb);
+exports.selectAllCinemas = (filter, cb) => {
+  const sql = `SELECT * FROM "cinemas" WHERE "name" LIKE $1 ORDER BY "${filter.sortBy}" ${filter.sort} LIMIT $2 OFFSET $3`;
+  const value = [`%${filter.search}%`, filter.limit, filter.offset];
+  db.query(sql, value, cb);
+};
+
+exports.selectCountAllCinemas = (filter, cb) => {
+  const sql = 'SELECT COUNT("name") AS "totalData" FROM "cinemas" WHERE "name" LIKE $1';
+  const value = [`%${filter.search}%`];
+  db.query(sql, value, cb);
 };
 
 exports.selectCinemas = (id, cb) => {
@@ -18,7 +25,7 @@ exports.insertCinemas = (data, cb) => {
 };
 
 exports.updateCinemas = (data, cb) => {
-  const sql = 'UPDATE "cinemas" SET "name" = $1 WHERE "id" = $2 RETURNING *';
+  const sql = `UPDATE "cinemas" SET "name" = COALESCE(NULLIF($1, ''), "name") WHERE "id" = $2 RETURNING *`;
   const value = [data.body.name, data.params.id];
   db.query(sql, value, cb);
 };

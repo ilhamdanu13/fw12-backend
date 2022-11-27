@@ -1,12 +1,20 @@
 const resetPasswordModel = require("../models/resetPassword.model");
 const errorHandler = require("../helpers/errorHandler.helper");
+const filter = require("../helpers/filter.helper");
 
 exports.readAllResetPassword = (req, res) => {
-  resetPasswordModel.selectAllResetPassword((err, data) => {
-    return res.status(200).json({
-      success: true,
-      message: "List all reset passwords",
-      results: data?.rows,
+  const sortable = ["email", "userId", "code"];
+  filter(req.query, sortable, resetPasswordModel.selectCountAllResetPassword, res, (filter, pageInfo) => {
+    resetPasswordModel.selectAllResetPassword(filter, (err, data) => {
+      if (err) {
+        return errorHandler(err, res);
+      }
+      return res.status(200).json({
+        success: true,
+        message: "List all reset passwords",
+        pageInfo,
+        results: data?.rows,
+      });
     });
   });
 };

@@ -1,12 +1,20 @@
 const genreModel = require("../models/genre.model");
 const errorHandler = require("../helpers/errorHandler.helper");
+const filter = require("../helpers/filter.helper");
 
 exports.readAllGenre = (req, res) => {
-  genreModel.selectAllGenre((err, data) => {
-    return res.status(200).json({
-      success: true,
-      message: "List all genre",
-      results: data.rows,
+  const sortable = ["name", "createdAt", "updatedAt"];
+  filter(req.query, sortable, genreModel.selectCountAllGenre, res, (filter, pageInfo) => {
+    genreModel.selectAllGenre(filter, (err, data) => {
+      if (err) {
+        return errorHandler(err, res);
+      }
+      return res.status(200).json({
+        success: true,
+        message: "List all genre",
+        pageInfo,
+        results: data.rows,
+      });
     });
   });
 };

@@ -1,8 +1,15 @@
 const db = require("../helpers/db.helper");
 
-exports.selectAllPaymentMethod = (cb) => {
-  const sql = 'SELECT * FROM "paymentMethod"';
-  db.query(sql, cb);
+exports.selectAllPaymentMethod = (filter, cb) => {
+  const sql = `SELECT * FROM "paymentMethod" WHERE "name" LIKE $1 ORDER BY "${filter.sortBy}" ${filter.sort} LIMIT $2 OFFSET $3`;
+  const value = [`%${filter.search}%`, filter.limit, filter.offset];
+  db.query(sql, value, cb);
+};
+
+exports.selectCountAllMethod = (filter, cb) => {
+  const sql = 'SELECT COUNT("name") AS "totalData" FROM "paymentMethod" WHERE "name" LIKE $1';
+  const value = [`%${filter.search}%`];
+  db.query(sql, value, cb);
 };
 
 exports.selectPaymentMethod = (id, cb) => {
@@ -18,7 +25,7 @@ exports.insertPaymentMethod = (data, cb) => {
 };
 
 exports.updatePaymentMethod = (data, cb) => {
-  const sql = 'UPDATE "paymentMethod" SET "name" = $1 WHERE "id" = $2 RETURNING *';
+  const sql = `UPDATE "paymentMethod" SET "name" = COALESCE(NULLIF($1, ''), "name") WHERE "id" = $2 RETURNING *`;
   const value = [data.body.name, data.params.id];
   db.query(sql, value, cb);
 };

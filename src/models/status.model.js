@@ -1,8 +1,15 @@
 const db = require("../helpers/db.helper");
 
-exports.selectAllStatus = (cb) => {
-  const sql = 'SELECT * FROM "status"';
-  db.query(sql, cb);
+exports.selectAllStatus = (filter, cb) => {
+  const sql = `SELECT * FROM "status" WHERE "name" LIKE $1 ORDER BY "${filter.sortBy}" ${filter.sort} LIMIT $2 OFFSET $3`;
+  const value = [`%${filter.search}%`, filter.limit, filter.offset];
+  db.query(sql, value, cb);
+};
+
+exports.selectCountAllStatus = (filter, cb) => {
+  const sql = 'SELECT COUNT("name") AS "totalData" FROM "status" WHERE "name" LIKE $1';
+  const value = [`%${filter.search}%`];
+  db.query(sql, value, cb);
 };
 
 exports.selectStatus = (id, cb) => {
@@ -18,7 +25,7 @@ exports.insertStatus = (data, cb) => {
 };
 
 exports.updateStatus = (data, cb) => {
-  const sql = 'UPDATE "status" SET "name" = $1 WHERE "id" = $2 RETURNING *';
+  const sql = `UPDATE "status" SET "name" = COALESCE(NULLIF($1, ''), "name") WHERE "id" = $2 RETURNING *`;
   const value = [data.body.name, data.params.id];
   db.query(sql, value, cb);
 };

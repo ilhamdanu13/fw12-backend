@@ -1,12 +1,20 @@
 const paymentMethodModel = require("../models/paymentMethod.model");
 const errorHandler = require("../helpers/errorHandler.helper");
+const filter = require("../helpers/filter.helper");
 
 exports.readAllPaymentMethod = (req, res) => {
-  paymentMethodModel.selectAllPaymentMethod((err, data) => {
-    return res.status(200).json({
-      success: true,
-      message: "List all payment methods",
-      results: data?.rows,
+  const sortable = ["name"];
+  filter(req.query, sortable, paymentMethodModel.selectCountAllMethod, res, (filter, pageInfo) => {
+    paymentMethodModel.selectAllPaymentMethod(filter, (err, data) => {
+      if (err) {
+        return errorHandler(err, res);
+      }
+      return res.status(200).json({
+        success: true,
+        message: "List all payment methods",
+        pageInfo,
+        results: data?.rows,
+      });
     });
   });
 };

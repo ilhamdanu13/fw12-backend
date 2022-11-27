@@ -1,18 +1,26 @@
-const { insertUser, selectAllUsers, selectUser, updateUser, deleteUser } = require("../models/users.model");
+const usersModel = require("../models/users.model");
 const errorHandler = require("../helpers/errorHandler.helper");
+const filter = require("../helpers/filter.helper");
 
 exports.readAllUsers = (req, res) => {
-  selectAllUsers((err, data) => {
-    return res.status(200).json({
-      success: true,
-      message: "List data of users",
-      results: data?.rows,
+  const sortable = ["firstName", "lastName", "email"];
+  filter(req.query, sortable, usersModel.selectCountAllUsers, res, (filter, pageinfo) => {
+    usersModel.selectAllUsers(filter, (err, data) => {
+      if (err) {
+        return errorHandler(err, res);
+      }
+      return res.status(200).json({
+        success: true,
+        message: "List data of users",
+        pageinfo,
+        results: data?.rows,
+      });
     });
   });
 };
 
 exports.createUser = (req, res) => {
-  insertUser(req.body, (err, data) => {
+  usersModel.insertUser(req.body, (err, data) => {
     if (err) {
       return errorHandler(err, res);
     }
@@ -25,17 +33,17 @@ exports.createUser = (req, res) => {
 };
 
 exports.updateUser = (req, res) => {
-  updateUser(req, (err, data) => {
+  usersModel.updateUser(req, (err, data) => {
     return res.status(200).json({
       success: true,
       message: "User updated successfully",
-      results: data.rows[0],
+      results: data?.rows[0],
     });
   });
 };
 
 exports.deleteUser = (req, res) => {
-  deleteUser(req.params.id, (err, data) => {
+  usersModel.deleteUser(req.params.id, (err, data) => {
     return res.status(200).json({
       success: true,
       message: "Delete user successfully",
@@ -45,7 +53,7 @@ exports.deleteUser = (req, res) => {
 };
 
 exports.readUser = (req, res) => {
-  selectUser(req.params.id, (err, data) => {
+  usersModel.selectUser(req.params.id, (err, data) => {
     return res.status(200).json({
       success: true,
       message: "Detail user",
