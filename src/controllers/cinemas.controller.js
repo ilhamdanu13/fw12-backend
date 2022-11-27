@@ -21,6 +21,9 @@ exports.readAllCinemas = (req, res) => {
 
 exports.readCinemas = (req, res) => {
   cinemasModel.selectCinemas(req.params.id, (err, data) => {
+    if (err) {
+      return errorHandler(err, res);
+    }
     return res.status(200).json({
       success: true,
       message: "Detail cinemas",
@@ -44,6 +47,9 @@ exports.createCinemas = (req, res) => {
 
 exports.updateCinemas = (req, res) => {
   cinemasModel.updateCinemas(req, (err, data) => {
+    if (err) {
+      return errorHandler(err, res);
+    }
     return res.status(200).json({
       success: true,
       message: "Cinemas updated successfully",
@@ -54,6 +60,9 @@ exports.updateCinemas = (req, res) => {
 
 exports.deleteCinemas = (req, res) => {
   cinemasModel.deleteCinemas(req.params.id, (err, data) => {
+    if (err) {
+      return errorHandler(err, res);
+    }
     return res.status(200).json({
       success: true,
       message: "Delete cinemas successfully",

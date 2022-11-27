@@ -21,6 +21,9 @@ exports.readAllReservedSeat = (req, res) => {
 
 exports.readReservedSeat = (req, res) => {
   reservedSeatModel.selectReservedSeat(req.params.id, (err, data) => {
+    if (err) {
+      return errorHandler(err, res);
+    }
     return res.status(200).json({
       success: true,
       message: "Detail reserved seat",
@@ -44,6 +47,9 @@ exports.createReservedSeat = (req, res) => {
 
 exports.updateReservedSeat = (req, res) => {
   reservedSeatModel.updateReservedSeat(req, (err, data) => {
+    if (err) {
+      return errorHandler(err, res);
+    }
     return res.status(200).json({
       success: true,
       message: "Reserved seat updated successfully",
@@ -54,6 +60,9 @@ exports.updateReservedSeat = (req, res) => {
 
 exports.deleteReservedSeat = (req, res) => {
   reservedSeatModel.deleteReservedSeat(req.params.id, (err, data) => {
+    if (err) {
+      return errorHandler(err, res);
+    }
     return res.status(200).json({
       success: true,
       message: "Delete reserved seat successfully",

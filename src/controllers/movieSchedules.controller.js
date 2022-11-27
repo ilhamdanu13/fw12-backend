@@ -13,6 +13,9 @@ exports.readAllMovieSchedules = (req, res) => {
 
 exports.readMovieSchedules = (req, res) => {
   movieSchedulesModel.selectMovieSchedules(req.params.id, (err, data) => {
+    if (err) {
+      return errorHandler(err, res);
+    }
     return res.status(200).json({
       success: true,
       message: "Detail movie schedule",
@@ -36,6 +39,9 @@ exports.createMovieSchedules = (req, res) => {
 
 exports.updateMovieSchedules = (req, res) => {
   movieSchedulesModel.updateMovieSchedules(req, (err, data) => {
+    if (err) {
+      return errorHandler(err, res);
+    }
     return res.status(200).json({
       success: true,
       message: "Movie schedule updated successfully",
@@ -46,6 +52,9 @@ exports.updateMovieSchedules = (req, res) => {
 
 exports.deleteMovieSchedules = (req, res) => {
   movieSchedulesModel.deleteMovieSchedules(req.params.id, (err, data) => {
+    if (err) {
+      return errorHandler(err, res);
+    }
     return res.status(200).json({
       success: true,
       message: "Delete movie schedule successfully",

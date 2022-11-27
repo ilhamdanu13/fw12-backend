@@ -34,6 +34,9 @@ exports.createUser = (req, res) => {
 
 exports.updateUser = (req, res) => {
   usersModel.updateUser(req, (err, data) => {
+    if (err) {
+      return errorHandler(err, res);
+    }
     return res.status(200).json({
       success: true,
       message: "User updated successfully",
@@ -44,6 +47,9 @@ exports.updateUser = (req, res) => {
 
 exports.deleteUser = (req, res) => {
   usersModel.deleteUser(req.params.id, (err, data) => {
+    if (err) {
+      return errorHandler(err, res);
+    }
     return res.status(200).json({
       success: true,
       message: "Delete user successfully",
@@ -54,6 +60,9 @@ exports.deleteUser = (req, res) => {
 
 exports.readUser = (req, res) => {
   usersModel.selectUser(req.params.id, (err, data) => {
+    if (err) {
+      return errorHandler(err, res);
+    }
     return res.status(200).json({
       success: true,
       message: "Detail user",

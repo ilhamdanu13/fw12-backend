@@ -21,6 +21,9 @@ exports.readAllResetPassword = (req, res) => {
 
 exports.readResetPassword = (req, res) => {
   resetPasswordModel.selectResetPassword(req.params.id, (err, data) => {
+    if (err) {
+      return errorHandler(err, res);
+    }
     return res.status(200).json({
       success: true,
       message: "Detail reset password",
@@ -44,6 +47,9 @@ exports.createResetPassword = (req, res) => {
 
 exports.updateResetPassword = (req, res) => {
   resetPasswordModel.updateResetPassword(req, (err, data) => {
+    if (err) {
+      return errorHandler(err, res);
+    }
     return res.status(200).json({
       success: true,
       message: "Reset password updated successfully",
@@ -54,6 +60,9 @@ exports.updateResetPassword = (req, res) => {
 
 exports.deleteResetPassword = (req, res) => {
   resetPasswordModel.deleteResetPassword(req.params.id, (err, data) => {
+    if (err) {
+      return errorHandler(err, res);
+    }
     return res.status(200).json({
       success: true,
       message: "Delete reset password successfully",

@@ -22,6 +22,9 @@ exports.readAllSubscriber = (req, res) => {
 
 exports.readSubscriber = (req, res) => {
   subscriberModel.selectSubscriber(req.params.id, (err, data) => {
+    if (err) {
+      return errorHandler(err, res);
+    }
     return res.status(200).json({
       success: true,
       message: "Detail subscribers",
@@ -45,6 +48,9 @@ exports.createSubscriber = (req, res) => {
 
 exports.updateSubscriber = (req, res) => {
   subscriberModel.updateSubscriber(req, (err, data) => {
+    if (err) {
+      return errorHandler(err, res);
+    }
     return res.status(200).json({
       success: true,
       message: "Subscriber updated successfully",
@@ -55,6 +61,9 @@ exports.updateSubscriber = (req, res) => {
 
 exports.deleteSubscriber = (req, res) => {
   subscriberModel.deleteSubscriber(req.params.id, (err, data) => {
+    if (err) {
+      return errorHandler(err, res);
+    }
     return res.status(200).json({
       success: true,
       message: "Delete subscriber successfully",

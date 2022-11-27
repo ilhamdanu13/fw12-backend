@@ -22,6 +22,9 @@ exports.readAllStatus = (req, res) => {
 
 exports.readStatus = (req, res) => {
   statusModel.selectStatus(req.params.id, (err, data) => {
+    if (err) {
+      return errorHandler(err, res);
+    }
     return res.status(200).json({
       success: true,
       message: "Detail reserved status",
@@ -45,6 +48,9 @@ exports.createStatus = (req, res) => {
 
 exports.updateStatus = (req, res) => {
   statusModel.updateStatus(req, (err, data) => {
+    if (err) {
+      return errorHandler(err, res);
+    }
     return res.status(200).json({
       success: true,
       message: "Status updated successfully",
@@ -55,6 +61,9 @@ exports.updateStatus = (req, res) => {
 
 exports.deleteStatus = (req, res) => {
   statusModel.deleteStatus(req.params.id, (err, data) => {
+    if (err) {
+      return errorHandler(err, res);
+    }
     return res.status(200).json({
       success: true,
       message: "Delete status successfully",

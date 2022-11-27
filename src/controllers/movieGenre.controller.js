@@ -3,6 +3,9 @@ const errorHandler = require("../helpers/errorHandler.helper");
 
 exports.readAllMovieGenre = (req, res) => {
   movieGenreModel.selectAllMovieGenre((err, data) => {
+    if (err) {
+      return errorHandler(err, res);
+    }
     return res.status(200).json({
       success: true,
       message: "List all movie genres",
@@ -13,6 +16,9 @@ exports.readAllMovieGenre = (req, res) => {
 
 exports.readMovieGenre = (req, res) => {
   movieGenreModel.selectMovieGenre(req.params.id, (err, data) => {
+    if (err) {
+      return errorHandler(err, res);
+    }
     return res.status(200).json({
       success: true,
       message: "Detail movie genre",
@@ -37,6 +43,9 @@ exports.createMovieGenre = (req, res) => {
 
 exports.updateMovieGenre = (req, res) => {
   movieGenreModel.updateMovieGenre(req, (err, data) => {
+    if (err) {
+      return errorHandler(err, res);
+    }
     return res.status(200).json({
       success: true,
       message: "Movie genre updated successfully",
@@ -47,6 +56,9 @@ exports.updateMovieGenre = (req, res) => {
 
 exports.deleteMovieGenre = (req, res) => {
   movieGenreModel.deleteMovieGenre(req.params.id, (err, data) => {
+    if (err) {
+      return errorHandler(err, res);
+    }
     return res.status(200).json({
       success: true,
       message: "Delete movie genre successfully",

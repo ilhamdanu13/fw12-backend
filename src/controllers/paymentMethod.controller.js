@@ -21,6 +21,9 @@ exports.readAllPaymentMethod = (req, res) => {
 
 exports.readPaymentMethod = (req, res) => {
   paymentMethodModel.selectPaymentMethod(req.params.id, (err, data) => {
+    if (err) {
+      return errorHandler(err, res);
+    }
     return res.status(200).json({
       success: true,
       message: "Detail payment method",
@@ -44,6 +47,9 @@ exports.createPaymentMethod = (req, res) => {
 
 exports.updatePaymentMethod = (req, res) => {
   paymentMethodModel.updatePaymentMethod(req, (err, data) => {
+    if (err) {
+      return errorHandler(err, res);
+    }
     return res.status(200).json({
       success: true,
       message: "Payment method updated successfully",
@@ -54,6 +60,9 @@ exports.updatePaymentMethod = (req, res) => {
 
 exports.deletePaymentMethod = (req, res) => {
   paymentMethodModel.deletePaymentMethod(req.params.id, (err, data) => {
+    if (err) {
+      return errorHandler(err, res);
+    }
     return res.status(200).json({
       success: true,
       message: "Delete payment method successfully",

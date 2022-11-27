@@ -21,6 +21,9 @@ exports.readAllTransactions = (req, res) => {
 
 exports.readTransactions = (req, res) => {
   transactionsModel.selectTransactions(req.params.id, (err, data) => {
+    if (err) {
+      return errorHandler(err, res);
+    }
     return res.status(200).json({
       success: true,
       message: "Detail transaction",
@@ -45,6 +48,9 @@ exports.createTransactions = (req, res) => {
 
 exports.updateTransactions = (req, res) => {
   transactionsModel.updateTransactions(req, (err, data) => {
+    if (err) {
+      return errorHandler(err, res);
+    }
     return res.status(200).json({
       success: true,
       message: "Transaction updated successfully",
@@ -55,6 +61,9 @@ exports.updateTransactions = (req, res) => {
 
 exports.deleteTransactions = (req, res) => {
   transactionsModel.deleteTransactions(req.params.id, (err, data) => {
+    if (err) {
+      return errorHandler(err, res);
+    }
     return res.status(200).json({
       success: true,
       message: "Delete transaction successfully",

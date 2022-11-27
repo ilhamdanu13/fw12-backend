@@ -21,6 +21,9 @@ exports.readAllGenre = (req, res) => {
 
 exports.readGenre = (req, res) => {
   genreModel.selectGenre(req.params.id, (err, data) => {
+    if (err) {
+      return errorHandler(err, res);
+    }
     return res.status(200).json({
       success: true,
       message: "Detail genre",
@@ -44,6 +47,9 @@ exports.createGenre = (req, res) => {
 
 exports.updateGenre = (req, res) => {
   genreModel.updateGenre(req, (err, data) => {
+    if (err) {
+      return errorHandler(err, res);
+    }
     return res.status(200).json({
       success: true,
       message: "Genre updated successfully",
@@ -54,6 +60,9 @@ exports.updateGenre = (req, res) => {
 
 exports.deleteGenre = (req, res) => {
   genreModel.deleteGenre(req.params.id, (err, data) => {
+    if (err) {
+      return errorHandler(err, res);
+    }
     return res.status(200).json({
       success: true,
       message: "Delete genre successfully",

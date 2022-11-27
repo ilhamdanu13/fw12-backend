@@ -22,6 +22,9 @@ exports.readAllCasts = (req, res) => {
 
 exports.readCasts = (req, res) => {
   castsModel.selectCasts(req.params.id, (err, data) => {
+    if (err) {
+      return errorHandler(err, res);
+    }
     return res.status(200).json({
       success: true,
       message: "Detail casts",
@@ -45,6 +48,9 @@ exports.createCasts = (req, res) => {
 
 exports.updateCasts = (req, res) => {
   castsModel.updateCasts(req, (err, data) => {
+    if (err) {
+      return errorHandler(err, res);
+    }
     return res.status(200).json({
       success: true,
       message: "Casts updated successfully",
@@ -55,6 +61,9 @@ exports.updateCasts = (req, res) => {
 
 exports.deleteCasts = (req, res) => {
   castsModel.deleteCasts(req.params.id, (err, data) => {
+    if (err) {
+      return errorHandler(err, res);
+    }
     return res.status(200).json({
       success: true,
       message: "Delete casts successfully",

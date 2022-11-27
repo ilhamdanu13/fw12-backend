@@ -21,6 +21,9 @@ exports.readAllMovies = (req, res) => {
 
 exports.readMovies = (req, res) => {
   moviesModel.selectMovies(req.params.id, (err, data) => {
+    if (err) {
+      return errorHandler(err, res);
+    }
     return res.status(200).json({
       success: true,
       message: "Detail movie",
@@ -44,6 +47,9 @@ exports.createMovies = (req, res) => {
 
 exports.updateMovies = (req, res) => {
   moviesModel.updateMovies(req, (err, data) => {
+    if (err) {
+      return errorHandler(err, res);
+    }
     return res.status(200).json({
       success: true,
       message: "Movie updated successfully",
@@ -54,6 +60,9 @@ exports.updateMovies = (req, res) => {
 
 exports.deleteMovies = (req, res) => {
   moviesModel.deleteMovies(req.params.id, (err, data) => {
+    if (err) {
+      return errorHandler(err, res);
+    }
     return res.status(200).json({
       success: true,
       message: "Delete movie successfully",

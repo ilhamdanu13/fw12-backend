@@ -3,6 +3,9 @@ const errorHandler = require("../helpers/errorHandler.helper");
 
 exports.readAllMovieCasts = (req, res) => {
   movieCastsModel.selectAllMovieCasts((err, data) => {
+    if (err) {
+      return errorHandler(err, res);
+    }
     return res.status(200).json({
       success: true,
       message: "List all movie casts",
@@ -13,6 +16,9 @@ exports.readAllMovieCasts = (req, res) => {
 
 exports.readMovieCasts = (req, res) => {
   movieCastsModel.selectMovieCasts(req.params.id, (err, data) => {
+    if (err) {
+      return errorHandler(err, res);
+    }
     return res.status(200).json({
       success: true,
       message: "Detail movie casts",
@@ -46,6 +52,9 @@ exports.updateMovieCasts = (req, res) => {
 
 exports.deleteMovieCasts = (req, res) => {
   movieCastsModel.deleteMovieCasts(req.params.id, (err, data) => {
+    if (err) {
+      return errorHandler(err, res);
+    }
     return res.status(200).json({
       success: true,
       message: "Delete movie casts successfully",
