@@ -24,7 +24,7 @@ exports.insertTransactions = (data, cb) => {
 };
 
 exports.updateTransactions = (data, cb) => {
-  const sql = `UPDATE "transactions" SET "bookingDate" = COALESCE(NULLIF($1, ''), "bookingDate"), "movieId" = COALESCE(NULLIF($2, ''), "movieId), "cinemaId" = COALESCE(NULLIF($3, ''), "cinemaId"), "movieScheduleId" = COALESCE(NULLIF($4, ''), "movieScheduleId"), "fullName" = COALESCE(NULLIF($5, ''), "fullName"), "email" = COALESCE(NULLIF($6, ''), "email"), "phoneNumber" = COALESCE(NULLIF($7, ''), "phoneNumber"), "statusId" = COALESCE(NULLIF($8, ''), "statusId") WHERE "id" = $9 RETURNING *`;
+  const sql = `UPDATE "transactions" SET "bookingDate" = COALESCE(NULLIF($1, '')::TIMESTAMPTZ, "bookingDate"), "movieId" = COALESCE(NULLIF($2, '')::INTEGER, "movieId"), "cinemaId" = COALESCE(NULLIF($3, '')::INTEGER, "cinemaId"), "movieScheduleId" = COALESCE(NULLIF($4, '')::INTEGER, "movieScheduleId"), "fullName" = COALESCE(NULLIF($5, '')VARCHAR, "fullName"), "email" = COALESCE(NULLIF($6, '')VARCHAR, "email"), "phoneNumber" = COALESCE(NULLIF($7, ''), "phoneNumber"), "statusId" = COALESCE(NULLIF($8, '')::INTEGER, "statusId") WHERE "id" = $9 RETURNING *`;
   const value = [data.body.bookingDate, data.body.movieId, data.body.cinemaId, data.body.movieScheduleId, data.body.fullName, data.body.email, data.body.phoneNumber, data.body.statusId, data.params.id];
   db.query(sql, value, cb);
 };

@@ -25,7 +25,7 @@ exports.insertStatus = (data, cb) => {
 };
 
 exports.updateStatus = (data, cb) => {
-  const sql = `UPDATE "status" SET "name" = COALESCE(NULLIF($1, ''), "name") WHERE "id" = $2 RETURNING *`;
+  const sql = `UPDATE "status" SET "name" = COALESCE(NULLIF($1, '')::VARCHAR, "name") WHERE "id" = $2 RETURNING *`;
   const value = [data.body.name, data.params.id];
   db.query(sql, value, cb);
 };

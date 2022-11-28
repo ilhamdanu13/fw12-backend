@@ -18,7 +18,7 @@ exports.insertMovieGenre = (data, cb) => {
 };
 
 exports.updateMovieGenre = (data, cb) => {
-  const sql = `UPDATE "movieGenre" SET "movieId" = COALESCE(NULLIF($1, ''), "movieId"), "genreId" = COALESCE(NULLIF($2, ''), "movieId") WHERE "id" = $3 RETURNING *`;
+  const sql = `UPDATE "movieGenre" SET "movieId" = COALESCE(NULLIF($1, '')::INTEGER, "movieId"), "genreId" = COALESCE(NULLIF($2, '')::INTEGER, "movieId") WHERE "id" = $3 RETURNING *`;
   const value = [data.body.movieId, data.body.genreId, data.params.id];
   db.query(sql, value, cb);
 };

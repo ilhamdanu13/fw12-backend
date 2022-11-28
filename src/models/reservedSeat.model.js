@@ -25,8 +25,8 @@ exports.insertReservedSeat = (data, cb) => {
 };
 
 exports.updateReservedSeat = (data, cb) => {
-  const sql = `UPDATE "reservedSeat" SET "seatNum" = COALESCE(NULLIF($1, ''), "seatNum") WHERE "id" = $2 RETURNING *`;
-  const value = [data.body.seatNum, data.params.id];
+  const sql = `UPDATE "reservedSeat" SET "seatNum" = COALESCE(NULLIF($1, '')::VARCHAR, "seatNum"), "transactionId" = COALESCE(NULLIF($2, '')::INTEGER, "transactionId") WHERE "id" = $3 RETURNING *`;
+  const value = [data.body.seatNum, data.body.transactionId, data.params.id];
   db.query(sql, value, cb);
 };
 

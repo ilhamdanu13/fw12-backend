@@ -49,6 +49,7 @@ exports.createTransactions = (req, res) => {
 exports.updateTransactions = (req, res) => {
   transactionsModel.updateTransactions(req, (err, data) => {
     if (err) {
+      console.log(err);
       return errorHandler(err, res);
     }
     return res.status(200).json({

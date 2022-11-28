@@ -25,8 +25,8 @@ exports.insertCinemas = (data, cb) => {
 };
 
 exports.updateCinemas = (data, cb) => {
-  const sql = `UPDATE "cinemas" SET "name" = COALESCE(NULLIF($1, ''), "name") WHERE "id" = $2 RETURNING *`;
-  const value = [data.body.name, data.params.id];
+  const sql = `UPDATE "cinemas" SET "name" = COALESCE(NULLIF($1, '')::VARCHAR, "name"),"picture" = COALESCE(NULLIF($2, '')::VARCHAR, "picture"),"address" = COALESCE(NULLIF($3, '')::VARCHAR, "address"), "city" = COALESCE(NULLIF($4, '')::VARCHAR, "city") WHERE "id" = $5 RETURNING *`;
+  const value = [data.body.name, data.body.picture, data.body.address, data.body.city, data.params.id];
   db.query(sql, value, cb);
 };
 
