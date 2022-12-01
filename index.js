@@ -1,5 +1,6 @@
 const express = require("express");
 const cors = require("cors");
+const morgan = require("morgan");
 const postgre = require("./src/helpers/db.helper");
 
 const app = express();
@@ -7,6 +8,10 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cors());
+app.use(morgan("dev"));
+app.use(require("express-status-monitor")());
+
+app.use("/assets/upload", express.static("uploads/"));
 
 app.use("/", require("./src/routes"));
 

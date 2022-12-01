@@ -35,3 +35,19 @@ exports.deleteMovies = (id, cb) => {
   const value = [id];
   db.query(sql, value, cb);
 };
+
+exports.upcomingMovie = (data, cb) => {
+  const sql = `SELECT * FROM movies WHERE date_part('year', "releaseDate")::TEXT = COALESCE(NULLIF($1,''), date_part('year', current_date)::TEXT) AND date_part('month', "releaseDate")::TEXT = COALESCE(NULLIF($2,''), date_part('month', current_date)::TEXT)`;
+  const value = [data.year, data.month];
+  return db.query(sql, value, cb);
+};
+
+exports.nowShowing = (cb) => {
+  const sql = `SELECT m.id, m.title, ms."startDate", ms."endDate", string_agg(g.name, ', ') AS genre
+  FROM movies m
+  JOIN "movieSchedules" ms ON ms."movieId" = m.id
+  LEFT JOIN "movieGenre" mg ON mg."movieId" = m.id
+  LEFT JOIN genre g ON g.id = mg."genreId"
+  WHERE current_date BETWEEN ms."startDate" AND ms."endDate" GROUP BY m.id, ms.id`;
+  return db.query(sql, cb);
+};

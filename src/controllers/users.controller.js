@@ -2,11 +2,14 @@ const usersModel = require("../models/users.model");
 const errorHandler = require("../helpers/errorHandler.helper");
 const filter = require("../helpers/filter.helper");
 
+const fs = require("fs");
+
 exports.readAllUsers = (req, res) => {
   const sortable = ["firstName", "lastName", "email"];
   filter(req.query, sortable, usersModel.selectCountAllUsers, res, (filter, pageinfo) => {
     usersModel.selectAllUsers(filter, (err, data) => {
       if (err) {
+        console.log(err);
         return errorHandler(err, res);
       }
       return res.status(200).json({
@@ -33,7 +36,23 @@ exports.createUser = (req, res) => {
 };
 
 exports.updateUser = (req, res) => {
-  usersModel.updateUser(req, (err, data) => {
+  if (req.file) {
+    console.log(req.file);
+    req.body.picture = req.file.filename;
+    usersModel.selectUser(req.params.id, (err, data) => {
+      if (data.rows.length) {
+        const [user] = data.rows;
+        if (user.picture) {
+          fs.rm("uploads/" + user.picture, { force: true }, (err) => {
+            if (err) {
+              return errorHandler(err, res);
+            }
+          });
+        }
+      }
+    });
+  }
+  usersModel.updateUser(req.params.id, req.body, (err, data) => {
     if (err) {
       return errorHandler(err, res);
     }

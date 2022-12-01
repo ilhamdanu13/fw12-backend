@@ -71,3 +71,36 @@ exports.deleteMovies = (req, res) => {
     });
   });
 };
+
+exports.upcoming = (req, res) => {
+  console.log(req.userData);
+  const sortable = ["title", "releaseDate", "duration", "director", "synopsis"];
+  filter(req.query, sortable, moviesModel.selectCountAllMovies, res, (filter, pageInfo) => {
+    moviesModel.upcomingMovie(req.query, (err, data) => {
+      if (err) {
+        console.log(err);
+        return errorHandler(err, res);
+      }
+      return res.status(200).json({
+        success: true,
+        message: "Upcoming Movies",
+        pageInfo,
+        results: data?.rows,
+      });
+    });
+  });
+};
+
+exports.nowShowing = (req, res) => {
+  moviesModel.nowShowing((err, data) => {
+    if (err) {
+      console.log(err);
+      return errorHandler(err, res);
+    }
+    return res.status(200).json({
+      success: true,
+      message: "Now showing movies",
+      results: data?.rows,
+    });
+  });
+};

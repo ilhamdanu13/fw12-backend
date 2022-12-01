@@ -35,3 +35,9 @@ exports.deleteResetPassword = (id, cb) => {
   const value = [id];
   db.query(sql, value, cb);
 };
+
+exports.selectResetPasswordByEmailAndCode = (data, cb) => {
+  const sql = 'SELECT * FROM "resetPassword" WHERE email = $1 AND  code = $2';
+  const value = [data.email, data.code];
+  return db.query(sql, value, cb);
+};

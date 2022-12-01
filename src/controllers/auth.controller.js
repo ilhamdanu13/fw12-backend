@@ -1,4 +1,5 @@
 const userModel = require("../models/users.model");
+const resetPasswordModel = require("../models/resetPassword.model");
 const jwt = require("jsonwebtoken");
 const errorHandler = require("../helpers/errorHandler.helper");
 
@@ -32,7 +33,77 @@ exports.register = (req, res) => {
     return res.status(200).json({
       success: true,
       message: "Register successfully",
-      results: data.rows[0],
     });
   });
+};
+
+exports.forgotPassword = (req, res) => {
+  const { email } = req.body;
+  userModel.selectUserByEmail(email, (err, { rows: users }) => {
+    if (err) {
+      return errorHandler(err, res);
+    }
+    if (users.length) {
+      const [user] = users;
+      const data = {
+        email,
+        userId: user.id,
+        code: Math.ceil(Math.random() * 90000),
+      };
+      resetPasswordModel.insertResetPassword(data, (err, { rows: results }) => {
+        if (results.length) {
+          return res.status(200).json({
+            success: true,
+            message: "Reset password has been requested",
+          });
+        }
+      });
+    } else {
+      return res.status(400).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+  });
+};
+
+exports.resetPassword = (req, res) => {
+  const { password, confirmPassword } = req.body;
+  if (password === confirmPassword) {
+    resetPasswordModel.selectResetPasswordByEmailAndCode(req.body, (err, { rows: users }) => {
+      if (err) {
+        console.log(err);
+        return errorHandler(err, res);
+      }
+      if (users.length) {
+        const [resetRequest] = users;
+        userModel.updateUser(resetRequest.userId, { password }, (err, { rows: users }) => {
+          if (err) {
+            console.log(err);
+            return errorHandler(err, res);
+          }
+          if (users.length) {
+            resetPasswordModel.deleteResetPassword(resetRequest.id, (err, { rows }) => {
+              if (rows.length) {
+                return res.status(200).json({
+                  success: true,
+                  message: "Password updated, please relogin",
+                });
+              }
+            });
+          }
+        });
+      } else {
+        return res.status(400).json({
+          success: false,
+          message: "Reset request not found",
+        });
+      }
+    });
+  } else {
+    return res.status(400).json({
+      success: false,
+      message: "password and confirm password not match",
+    });
+  }
 };
