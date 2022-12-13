@@ -72,3 +72,32 @@ exports.deleteTransactions = (req, res) => {
     });
   });
 };
+
+exports.orderTransaction = (req, res) => {
+  const authorization = req.headers.authorization.split(" ")[1];
+  const auth = jwt.verify(authorization, "backend-secret");
+  const { id } = auth;
+
+  const result = {
+    bookingDate: req.body.bookingDate,
+    userId: id,
+    movieId: req.body.movieId,
+    cinemaId: req.body.cinemaId,
+    movieScheduleid: req.body.movieScheduleid,
+    fullName: req.body.fullName,
+    email: req.body.email,
+    phoneNumber: req.body.phoneNumber,
+    statusId: req.body.statusId,
+    paymentMethodId: req.body.paymentMethodId,
+  };
+  orderTransaction(result, (err, data) => {
+    if (err) {
+      return errorHandler(err, res);
+    }
+    return res.status(200).json({
+      success: true,
+      message: "Order created successfully",
+      results: data,
+    });
+  });
+};

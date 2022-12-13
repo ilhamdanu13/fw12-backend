@@ -43,7 +43,7 @@ exports.upcomingMovie = (data, cb) => {
 };
 
 exports.nowShowing = (cb) => {
-  const sql = `SELECT m.id, m.title, ms."startDate", ms."endDate", string_agg(g.name, ', ') AS genre
+  const sql = `SELECT m.id, m.title, m.picture, ms."startDate", ms."endDate", string_agg(g.name, ', ') AS genre
   FROM movies m
   JOIN "movieSchedules" ms ON ms."movieId" = m.id
   LEFT JOIN "movieGenre" mg ON mg."movieId" = m.id

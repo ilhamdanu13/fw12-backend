@@ -34,3 +34,26 @@ exports.deleteTransactions = (id, cb) => {
   const value = [id];
   db.query(sql, value, cb);
 };
+
+exports.orderTransaction = async (data, cb) => {
+  try {
+    await db.query("BEGIN");
+
+    const sql = 'INSERT INTO "transaction" ("bookingDate", "movieId", "cinemaId", "movieScheduleId", "fullName", "email", "phoneNumber", "statusId", "paymentMethodId") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *';
+    const values = await db.query(sql, [data.bookingDate, data.movieId, data.cinemaId, data.movieScheduleId, data.fullName, data.email, data.statusId, data.paymentMethodId]);
+
+    const sqlSeat = 'INSTERT INTO "reservedSeat" ("seatNum", "transactionId") VALUES ($1, $2) RETURNING *';
+    const value = await db.query(sqlSeat, [data.seatNum, data.transactionId]);
+
+    await db.query("COMMIT");
+    const ordered = {
+      transaction: values.rows[0],
+      reservedSeat: value.rows,
+    };
+    cb(null, ordered);
+  } catch (err) {
+    await db.query("ROLLBACK");
+
+    cb(err, null);
+  }
+};

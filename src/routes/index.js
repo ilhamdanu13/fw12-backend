@@ -6,7 +6,7 @@ routes.use("/users", require("./users.router"));
 routes.use("/genre", require("./genre.router"));
 routes.use("/casts", require("./casts.router"));
 routes.use("/cinemas", require("./cinemas.router"));
-routes.use("/movies", authMiddleWare, require("./movies.router"));
+routes.use("/movies", require("./movies.router"));
 routes.use("/movieScheduleTimes", require("./movieScheduleTimes.router"));
 routes.use("/movieSchedules", require("./movieSchedules.router"));
 routes.use("/paymentMethod", require("./paymentMethod.router"));
