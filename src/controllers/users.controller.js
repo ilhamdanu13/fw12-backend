@@ -89,3 +89,12 @@ exports.readUser = (req, res) => {
     });
   });
 };
+
+exports.updateDataUsers = async (req, res) => {
+  const Users = await updateUsers(req.body, req.params.id);
+  res.status(200).json({
+    success: true,
+    message: "Users updated successfully",
+    results: Users,
+  });
+};

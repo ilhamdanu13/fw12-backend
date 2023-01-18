@@ -1,7 +1,8 @@
 // define method
 const usersRouter = require("express").Router();
 
-const upploadMiddleware = require("../middlewares/upload.middleware");
+const uploadMiddleware = require("../middlewares/upload.middleware");
+const authMiddleWare = require("../middlewares/auth.middleware");
 // const multer = require("multer");
 // const upload = multer({ dest: "uploads/" });
 
@@ -13,7 +14,7 @@ usersRouter.get("/:id", readUser);
 
 usersRouter.post("/", createUser); // query String, Body
 
-usersRouter.patch("/:id", upploadMiddleware, updateUser); // query String, Body
+usersRouter.patch("/:id", uploadMiddleware, updateUser); // query String, Body
 
 usersRouter.delete("/:id", deleteUser); // query String
 

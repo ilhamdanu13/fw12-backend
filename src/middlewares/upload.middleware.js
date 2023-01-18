@@ -27,9 +27,9 @@ const upload = multer({
   limits: { fileSize: maxSize },
 });
 
-const upploadMiddleware = upload.single("picture");
+const uploadMiddleware = upload.single("picture");
 module.exports = (req, res, next) => {
-  upploadMiddleware(req, res, (err) => {
+  uploadMiddleware(req, res, (err) => {
     if (err) {
       console.log(err);
       return errorHandler(err, res);

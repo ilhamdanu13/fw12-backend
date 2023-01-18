@@ -297,4 +297,31 @@ FROM movies m
 JOIN "movieSchedules" ms ON ms."movieId" = m.id
 LEFT JOIN "movieGenre" mg ON mg."movieId" = m.id
 LEFT JOIN genre g ON g.id = mg."genreId"
-WHERE current_date BETWEEN ms."startDate" AND ms."endDate" GROUP BY m.id, ms.id
+WHERE current_date BETWEEN ms."startDate" AND ms."endDate" GROUP BY m.id, ms.id;
+
+
+SELECT m.*, string_agg(DISTINCT c.name, ', ') AS casts, string_agg(DISTINCT g.name, ', ') AS genre
+FROM movies m 
+LEFT JOIN "movieCasts" mc on mc."movieId" = m.id
+LEFT JOIN casts c on c.id = mc."castsId"
+LEFT JOIN "movieGenre" mg on mg."movieId" = m.id
+LEFT JOIN genre g on g.id = mg."genreId"
+WHERE m.id = 1
+GROUP BY m.id;
+
+SELECT m.*, string_agg(DISTINCT g.name, ', ') AS genre
+FROM movies m 
+LEFT JOIN "movieGenre" mg on mg."movieId" = m.id
+LEFT JOIN genre g on g.id = mg."genreId"
+WHERE m.id = 1
+GROUP BY m.id;
+
+
+ALTER TABLE "transactions"
+ADD COLUMN "seatNum" VARCHAR;
+
+ALTER TABLE "transactions"
+DROP COLUMN "reservedSeatId";
+
+ALTER TABLE "transactions"
+DROP COLUMN "seatNum"

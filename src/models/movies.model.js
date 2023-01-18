@@ -13,7 +13,14 @@ exports.selectCountAllMovies = (filter, cb) => {
 };
 
 exports.selectMovies = (id, cb) => {
-  const sql = "SELECT * FROM movies WHERE id = $1";
+  const sql = `SELECT m.*, string_agg(DISTINCT c.name, ', ') AS casts, string_agg(DISTINCT g.name, ', ') AS genre
+  FROM movies m 
+  LEFT JOIN "movieCasts" mc on mc."movieId" = m.id
+  LEFT JOIN casts c on c.id = mc."castsId"
+  LEFT JOIN "movieGenre" mg on mg."movieId" = m.id
+  LEFT JOIN genre g on g.id = mg."genreId"
+  WHERE m.id = $1
+  GROUP BY m.id`;
   const value = [id];
   return db.query(sql, value, cb);
 };
@@ -37,7 +44,9 @@ exports.deleteMovies = (id, cb) => {
 };
 
 exports.upcomingMovie = (data, cb) => {
-  const sql = `SELECT * FROM movies WHERE date_part('year', "releaseDate")::TEXT = COALESCE(NULLIF($1,''), date_part('year', current_date)::TEXT) AND date_part('month', "releaseDate")::TEXT = COALESCE(NULLIF($2,''), date_part('month', current_date)::TEXT)`;
+  const sql = `SELECT m.*,  string_agg(DISTINCT g.name, ', ') AS genre FROM movies m
+  LEFT JOIN "movieGenre" mg on mg."movieId" = m.id
+LEFT JOIN genre g on g.id = mg."genreId" WHERE date_part('year', "releaseDate")::TEXT = COALESCE(NULLIF($1,''), date_part('year', current_date)::TEXT) AND date_part('month', "releaseDate")::TEXT = COALESCE(NULLIF($2,''), date_part('month', current_date)::TEXT) GROUP BY m.id`;
   const value = [data.year, data.month];
   return db.query(sql, value, cb);
 };

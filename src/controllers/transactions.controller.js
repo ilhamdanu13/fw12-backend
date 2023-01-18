@@ -1,4 +1,5 @@
 const transactionsModel = require("../models/transactions.model");
+const reservedSeat = require("../models/reservedSeat.model");
 const errorHandler = require("../helpers/errorHandler.helper");
 const filter = require("../helpers/filter.helper");
 
@@ -74,30 +75,80 @@ exports.deleteTransactions = (req, res) => {
 };
 
 exports.orderTransaction = (req, res) => {
-  const authorization = req.headers.authorization.split(" ")[1];
-  const auth = jwt.verify(authorization, "backend-secret");
-  const { id } = auth;
-
-  const result = {
-    bookingDate: req.body.bookingDate,
-    userId: id,
-    movieId: req.body.movieId,
-    cinemaId: req.body.cinemaId,
-    movieScheduleid: req.body.movieScheduleid,
-    fullName: req.body.fullName,
-    email: req.body.email,
-    phoneNumber: req.body.phoneNumber,
-    statusId: req.body.statusId,
-    paymentMethodId: req.body.paymentMethodId,
-  };
-  orderTransaction(result, (err, data) => {
+  transactionsModel.orderTransaction(req.body, (err, results) => {
     if (err) {
+      console.log(err);
       return errorHandler(err, res);
     }
-    return res.status(200).json({
-      success: true,
-      message: "Order created successfully",
-      results: data,
+    req.body.transactionId = results.rows[0].id;
+    transactionsModel.seatNum(req.body, (err, data) => {
+      if (err) {
+        console.log(err);
+        return errorHandler(err, res);
+      }
+
+      return res.status(200).json({
+        success: true,
+        message: "Transaction created",
+        results: { ...results.rows[0], ...data.rows[0] },
+      });
     });
   });
 };
+
+// exports.orderTransaction = (req, res) => {
+
+//   const result = {
+//     bookingDate: req.body.bookingDate,
+//     movieId: req.body.movieId,
+//     cinemaId: req.body.cinemaId,
+//     movieScheduleid: req.body.movieScheduleid,
+//     fullName: req.body.fullName,
+//     email: req.body.email,
+//     phoneNumber: req.body.phoneNumber,
+//     statusId: req.body.statusId,
+//     paymentMethodId: req.body.paymentMethodId,
+//     // userId: id,
+//   };
+//   orderTransaction(result, (err, data) => {
+//     if (err) {
+//       return errorHandler(err, res);
+//     }
+//     return res.status(200).json({
+//       success: true,
+//       message: "Order created successfully",
+//       results: data,
+//     });
+//   });
+
+//   transactionsModel.seatNum(req.body, (err, data) => {
+//     if(err){
+//       return errorHandler(err, res)
+//     }
+//   })
+// };
+
+// const authorization = req.headers.authorization.split(" ")[1];
+// const auth = jwt.verify(authorization, "backend-secret");
+// const { id } = auth;
+
+// exports.createTransactionReservedSeat = (req, res) => {
+//   transactionsModel.insertTransactions(req.body, (err, data) => {
+//     if (err) {
+//       return errorHandler(err, res);
+//     }
+//     req.body.transactionsId = data.rows[0].id;
+
+//     reservedSeat.insertReservedSeat(req.body, (err, result) => {
+//       if (err) {
+//         return errorHandler(err, res);
+//       }
+
+//       return res.status(200).json({
+//         success: true,
+//         message: "Transaction success",
+//         results: data.rows[0],
+//       });
+//     });
+//   });
+// };

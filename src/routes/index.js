@@ -20,7 +20,6 @@ routes.use("/movieGenre", require("./movieGenre.router"));
 
 routes.use("/auth", require("./auth.router"));
 
-// routes.use("/profile", authMiddleWare, require("./profile.router"));
+routes.use("/profile", authMiddleWare, require("./profile.router"));
 
-// export router so that can use in index.js
 module.exports = routes;
