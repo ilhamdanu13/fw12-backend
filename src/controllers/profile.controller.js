@@ -1,5 +1,6 @@
 const usersModel = require("../models/users.model");
 const errorHandler = require("../helpers/errorHandler.helper");
+const fs = require("fs");
 
 exports.updateProfile = (req, res) => {
   if (req.file) {
