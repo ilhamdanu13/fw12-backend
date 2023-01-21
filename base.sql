@@ -324,4 +324,12 @@ ALTER TABLE "transactions"
 DROP COLUMN "reservedSeatId";
 
 ALTER TABLE "transactions"
-DROP COLUMN "seatNum"
+DROP COLUMN "seatNum";
+
+
+select mst.id, mst.time, mst."movieScheduleId", m.title, ms.price,  c.name as cinema, c.address, c.city, c.picture as cinemaPicture
+from "movieScheduleTimes" mst
+join "movies" m on m."id" = mst."movieScheduleId"
+left join "movieSchedules" ms on ms."id" = mst."movieScheduleId"
+left join "cinemas" c on c."id" = ms."cinemaId"
+where mst."movieScheduleId" = 1;

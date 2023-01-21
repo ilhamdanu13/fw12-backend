@@ -1,5 +1,6 @@
 const movieSchedulesRouter = require("express").Router();
 const { readAllMovieSchedules, readMovieSchedules, createMovieSchedules, updateMovieSchedules, deleteMovieSchedules } = require("../controllers/movieSchedules.controller");
+const { selectCinemaSchedules } = require("../models/movieSchedules.model");
 
 movieSchedulesRouter.get("/", readAllMovieSchedules);
 

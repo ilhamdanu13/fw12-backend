@@ -1,7 +1,8 @@
 const { Pool } = require("pg");
 
+console.log(process.env.DATABASE_URL);
 const db = new Pool({
-  connectionString: "postgresql://postgres:1@localhost:5432/moviedb?schema=public",
+  connectionString: process.env.DATABASE_URL,
 });
 
 module.exports = db;

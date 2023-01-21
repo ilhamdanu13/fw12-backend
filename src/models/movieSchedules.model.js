@@ -6,7 +6,14 @@ exports.selectAllMovieSchedules = (cb) => {
 };
 
 exports.selectMovieSchedules = (id, cb) => {
-  const sql = 'SELECT * FROM "movieSchedules" WHERE id = $1';
+  const sql = `select  array_agg( mst.time) as times,  m.title, ms.price, c.name as cinema, c.address, c.city, c.picture as cinemaPicture
+  from "movieScheduleTimes" mst
+  join "movies" m on m."id" = mst."movieScheduleId"
+  left join "movieSchedules" ms on ms."movieId" = mst."movieScheduleId"
+  left join "cinemas" c on c."id" = ms."cinemaId"
+  
+  where mst."movieScheduleId" = $1
+  group by m.title, ms.price, c.name, c.address, c.city, c.picture`;
   const value = [id];
   return db.query(sql, value, cb);
 };
