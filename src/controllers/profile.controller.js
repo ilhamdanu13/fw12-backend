@@ -2,6 +2,21 @@ const usersModel = require("../models/users.model");
 const errorHandler = require("../helpers/errorHandler.helper");
 const fs = require("fs");
 
+exports.readProfile = (req, res) => {
+  usersModel.selectUser(req.params.id, (err, data) => {
+    if (err) {
+      console.log(err);
+      return errorHandler(err, res);
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: "Get profile user by id",
+      results: data.rows[0],
+    });
+  });
+};
+
 exports.updateProfile = (req, res) => {
   if (req.file) {
     console.log(req.file);

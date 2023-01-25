@@ -6,7 +6,7 @@ exports.selectAllMovieSchedules = (cb) => {
 };
 
 exports.selectMovieSchedules = (id, cb) => {
-  const sql = `select  array_agg( mst.time) as times,  m.title, ms.price, c.name as cinema, c.address, c.city, c.picture as cinemaPicture
+  const sql = `select array_agg(mst.time) as times, m.title, ms.price, c.name as cinema, c.address, c.city, c.picture as cinemaPicture
   from "movieScheduleTimes" mst
   join "movies" m on m."id" = mst."movieScheduleId"
   left join "movieSchedules" ms on ms."movieId" = mst."movieScheduleId"

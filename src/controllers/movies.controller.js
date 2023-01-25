@@ -8,6 +8,7 @@ exports.readAllMovies = (req, res) => {
   filter(req.query, sortable, moviesModel.selectCountAllMovies, res, (filter, pageInfo) => {
     moviesModel.selectAllMovies(filter, (err, data) => {
       if (err) {
+        console.log(err);
         return errorHandler(err, res);
       }
       return res.status(200).json({
