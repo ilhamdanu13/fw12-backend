@@ -11,6 +11,7 @@ exports.selectCountAllTransactions = (filter, cb) => {
   const value = [`%${filter.search}%`];
   db.query(sql, value, cb);
 };
+
 exports.selectTransactions = (id, cb) => {
   const sql = 'SELECT * FROM "transactions" WHERE id = $1';
   const value = [id];
@@ -47,9 +48,3 @@ exports.seatNum = (data, cb) => {
   const value = [data.seatNum, data.transactionId];
   db.query(sql, value, cb);
 };
-
-// const ordered = {
-//   transaction: values.rows[0],
-//   reservedSeat: value.rows,
-// };
-// cb(null, ordered);
