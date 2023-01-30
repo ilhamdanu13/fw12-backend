@@ -4,18 +4,6 @@ const cloudinary = require("cloudinary").v2;
 const { CloudinaryStorage } = require("multer-storage-cloudinary");
 const path = require("path");
 
-// const storage = multer.diskStorage({
-//   destination: (req, file, cb) => {
-//     cb(null, "uploads");
-//   },
-//   filename: (req, file, cb) => {
-//     const extension = file.originalname.split(".");
-//     const ext = extension[extension.length - 1];
-//     const name = `${new Date().getDate()}_${new Date().getTime()}.${ext}`;
-//     cb(null, name);
-//   },
-// });
-
 cloudinary.config({
   cloud_name: process.env.CLOUD_NAME,
   api_key: process.env.API_KEY,
@@ -37,7 +25,7 @@ const storage = new CloudinaryStorage({
 
 const upload = multer({
   storage,
-  limits: { fileSize: 1000000 },
+  limits: { fileSize: 2000000 },
   fileFilter: (req, file, callback) => {
     const format = ["jpg", "png", "jpeg"];
     const extension = file.originalname.split(".");
@@ -49,20 +37,6 @@ const upload = multer({
     }
   },
 });
-
-// const maxSize = 1 * 1024 * 1024;
-// const upload = multer({
-//   storage: storage,
-//   fileFilter: (req, file, cb) => {
-//     if (file.mimetype == "image/png" || file.mimetype == "image/jpg" || file.mimetype == "image/jpeg") {
-//       cb(null, true);
-//     } else {
-//       cb(null, false);
-//       return cb(new Error("Only .png, .jpg, .jpeg format allowed"));
-//     }
-//   },
-//   limits: { fileSize: maxSize },
-// });
 
 const uploadMiddleware = upload.single("picture");
 module.exports = (req, res, next) => {
