@@ -1,4 +1,5 @@
 const errorHandler = (err, res) => {
+  console.log(err);
   if (err.message.includes('unique constraint "email"')) {
     return res.status(400).json({
       success: false,
