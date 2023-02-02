@@ -3,7 +3,7 @@ const { readAllTransactions, readTransactions, createTransactions, updateTransac
 
 transactionsRouter.get("/", readAllTransactions);
 
-transactionsRouter.get("/:detail/:id", readDetailTransactions);
+transactionsRouter.get("/detail/:id", readDetailTransactions);
 
 transactionsRouter.get("/:id", readTransactions);
 

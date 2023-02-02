@@ -12,9 +12,9 @@ exports.selectCountAllTransactions = (filter, cb) => {
   db.query(sql, value, cb);
 };
 
-exports.selectDetailTransactions = (id, cb) => {
+exports.selectDetailTransactions = (userId, cb) => {
   const sql = 'SELECT * FROM "transactions" WHERE "userId" = $1';
-  const value = [id];
+  const value = [userId];
   return db.query(sql, value, cb);
 };
 
