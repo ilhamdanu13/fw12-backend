@@ -1,7 +1,9 @@
 const transactionsRouter = require("express").Router();
-const { readAllTransactions, readTransactions, createTransactions, updateTransactions, deleteTransactions, orderTransaction } = require("../controllers/transactions.controller");
+const { readAllTransactions, readTransactions, createTransactions, updateTransactions, deleteTransactions, orderTransaction, readDetailTransactions } = require("../controllers/transactions.controller");
 
 transactionsRouter.get("/", readAllTransactions);
+
+transactionsRouter.get("/:detail/:id", readDetailTransactions);
 
 transactionsRouter.get("/:id", readTransactions);
 

@@ -20,6 +20,20 @@ exports.readAllTransactions = (req, res) => {
   });
 };
 
+exports.readDetailTransactions = (req, res) => {
+  transactionsModel.selectDetailTransactions(req.params.id, (err, data) => {
+    if (err) {
+      console.log(err);
+      return errorHandler(err, res);
+    }
+    return res.status(200).json({
+      success: true,
+      message: "Detail transaction",
+      results: data?.rows[0],
+    });
+  });
+};
+
 exports.readTransactions = (req, res) => {
   transactionsModel.selectTransactions(req.params.id, (err, data) => {
     if (err) {
