@@ -12,6 +12,20 @@ exports.selectCountAllTransactions = (filter, cb) => {
   db.query(sql, value, cb);
 };
 
+exports.selectHistoryTicket = (id, cb) => {
+  const sql = `select t.id, t."bookingDate", t."bookingTime", t."totalPrice", r."seatNum", m.title, string_agg( g.name, ', ') as genre
+  from "transactions" t
+  join "reservedSeat" r on r."transactionId" = t.id
+  left join "movies" m on m."id" = t."movieId"
+  left join "movieGenre" mg on mg."movieId" = m.id
+  left join "genre" g on g."id" = mg."genreId"
+  where t."id" = $1
+  group by t.id, m.title, r."seatNum"`;
+
+  const value = [id];
+  return db.query(sql, value, cb);
+};
+
 exports.selectHistoryTransactions = (id, cb) => {
   const sql = `SELECT t.*, m.title, c.picture as cinemaPicture, string_agg( g.name, ', ') as genre
   from "transactions" t

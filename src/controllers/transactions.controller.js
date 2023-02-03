@@ -34,6 +34,20 @@ exports.readHistoryTransactions = (req, res) => {
   });
 };
 
+exports.readHistoryTicket = (req, res) => {
+  transactionsModel.selectHistoryTicket(req.params.id, (err, data) => {
+    if (err) {
+      console.log(err);
+      return errorHandler(err, res);
+    }
+    return res.status(200).json({
+      success: true,
+      message: "Detail ticket",
+      results: data?.rows[0],
+    });
+  });
+};
+
 exports.readTransactions = (req, res) => {
   transactionsModel.selectTransactions(req.params.id, (err, data) => {
     if (err) {
