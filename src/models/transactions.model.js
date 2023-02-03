@@ -12,9 +12,17 @@ exports.selectCountAllTransactions = (filter, cb) => {
   db.query(sql, value, cb);
 };
 
-exports.selectDetailTransactions = (userId, cb) => {
-  const sql = 'SELECT * FROM "transactions" WHERE "userId" = $1';
-  const value = [userId];
+exports.selectHistoryTransactions = (id, cb) => {
+  const sql = `SELECT t.*, m.title, c.picture as cinemaPicture, string_agg( g.name, ', ') as genre
+  from "transactions" t
+  LEFT JOIN "cinemas" c on c."id" = t."cinemaId"
+  LEFT JOIN "movies" m on m."id" = t."movieId"
+  LEFT JOIN "movieGenre" mg on mg."movieId" = m.id
+  LEFT JOIN "genre" g on g."id" = mg."genreId"
+  WHERE "userId" = $1
+  GROUP BY t.id, m.title, c.picture
+  `;
+  const value = [id];
   return db.query(sql, value, cb);
 };
 

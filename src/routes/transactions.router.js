@@ -1,9 +1,10 @@
 const transactionsRouter = require("express").Router();
-const { readAllTransactions, readTransactions, createTransactions, updateTransactions, deleteTransactions, orderTransaction, readDetailTransactions } = require("../controllers/transactions.controller");
+const { readAllTransactions, readTransactions, createTransactions, updateTransactions, deleteTransactions, orderTransaction, readHistoryTransactions } = require("../controllers/transactions.controller");
+const authMiddleware = require("../middlewares/auth.middleware");
 
 transactionsRouter.get("/", readAllTransactions);
 
-transactionsRouter.get("/detail/:id", readDetailTransactions);
+transactionsRouter.get("/history/:id", authMiddleware, readHistoryTransactions);
 
 transactionsRouter.get("/:id", readTransactions);
 
