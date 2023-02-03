@@ -6,7 +6,7 @@ transactionsRouter.get("/", readAllTransactions);
 
 transactionsRouter.get("/history/:id", authMiddleware, readHistoryTransactions);
 
-transactionsRouter.get("/history/ticket/:id", authMiddleware, readHistoryTicket);
+transactionsRouter.get("/ticket/:id", authMiddleware, readHistoryTicket);
 
 transactionsRouter.get("/:id", readTransactions);
 
