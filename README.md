@@ -9,6 +9,7 @@ It's backend app for Cluezzy project that contain CRUD and also integrate to Pos
 ## Contents
 - About
 - Packages
+- Run App
 - ENV
 - Endpoint
 
@@ -20,6 +21,34 @@ It's backend app for Cluezzy project that contain CRUD and also integrate to Pos
 - [morgan](https://www.npmjs.com/package/morgan)
 - [multer](https://expressjs.com/en/resources/middleware/multer.html)
 - [nodemon](https://www.npmjs.com/package/nodemon)
+
+## Run App
+Clone this repo
+```bash
+  https://github.com/ilhamdanu13/fw12-backend.git
+```
+Go to the project directory
+
+```bash
+  cd project
+```
+
+Install dependencies
+
+```bash
+  npm install
+```
+
+Start the server
+
+```bash
+  npm run dev
+```
+
+## Postman
+- Go to [collection](https://www.postman.com/crimson-meteor-607305/workspace/cluezzy/globals)
+- Create a fork
+- Setting enviroment globals to [https://fw12-backend-shr6.vercel.app/](https://fw12-backend-shr6.vercel.app/)
 
 ## ENV
 - DATABASE URL
