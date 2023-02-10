@@ -40,7 +40,6 @@ app.get("/", (req, res) => {
       return res.status(200).json({
         success: true,
         messages: "Access database ",
-        data: result.rows,
       });
     }
   });
