@@ -1,0 +1,136 @@
+{
+	"info": {
+		"_postman_id": "aec530cf-5f37-469b-9351-b40edcf44060",
+		"name": "TRANSACTIONS",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "25026646"
+	},
+	"item": [
+		{
+			"name": "ORDER TRANSACTION",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "movieId",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "cinemaId",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "movieScheduleId",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "fullName",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "email",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "phoneNumber",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "statusId",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "paymentMethodId",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "seatNum",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "bookingDate",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "userId",
+							"value": "",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "/transactions/orderTransaction",
+					"path": [
+						"transactions",
+						"orderTransaction"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "LIST TRANSACTION",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/transactions",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"transactions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DETAIL TRANSACTION",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/transactions/id",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"transactions",
+						"id"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "HISTORY BY ID",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "TICKET BY ID",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		}
+	]
+}
