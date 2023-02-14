@@ -1,0 +1,82 @@
+{
+	"info": {
+		"_postman_id": "bb6f78e3-e44d-41e3-a702-72a9ad1d6234",
+		"name": "PROFILE",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "25026646"
+	},
+	"item": [
+		{
+			"name": "UPDATE PROFILE",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "firstName",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "lastName",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "email",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "phoneNumber",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "confirmPassword",
+							"value": "",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{baseURL}}/profile/1/update",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"profile",
+						"1",
+						"update"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "READ PROFILE",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/profile/id",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"profile",
+						"id"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
