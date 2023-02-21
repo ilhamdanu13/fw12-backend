@@ -47,16 +47,32 @@
 					]
 				},
 				"url": {
-					"raw": "http://localhost:8888/profile/id/update",
-					"protocol": "http",
+					"raw": "{{baseURL}}/profile/1/update",
 					"host": [
-						"localhost"
+						"{{baseURL}}"
 					],
-					"port": "8888",
 					"path": [
 						"profile",
-						"id",
+						"1",
 						"update"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "READ PROFILE",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/profile/id",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"profile",
+						"id"
 					]
 				}
 			},

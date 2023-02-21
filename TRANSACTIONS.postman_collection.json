@@ -87,9 +87,9 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{url}}/transactions",
+					"raw": "{{baseURL}}/transactions",
 					"host": [
-						"{{url}}"
+						"{{baseURL}}"
 					],
 					"path": [
 						"transactions"
@@ -102,7 +102,55 @@
 			"name": "DETAIL TRANSACTION",
 			"request": {
 				"method": "GET",
-				"header": []
+				"header": [],
+				"url": {
+					"raw": "{{url}}/transactions/id",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"transactions",
+						"id"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "HISTORY BY ID",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/transactions/history/1",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"transactions",
+						"history",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "TICKET BY ID",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/transactions/ticket/1",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"transactions",
+						"ticket",
+						"1"
+					]
+				}
 			},
 			"response": []
 		}

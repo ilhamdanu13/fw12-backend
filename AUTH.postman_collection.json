@@ -27,12 +27,10 @@
 					]
 				},
 				"url": {
-					"raw": "http://localhost:8888/auth/login",
-					"protocol": "http",
+					"raw": "{{url}}/auth/login",
 					"host": [
-						"localhost"
+						"{{url}}"
 					],
-					"port": "8888",
 					"path": [
 						"auth",
 						"login"
@@ -77,12 +75,10 @@
 					]
 				},
 				"url": {
-					"raw": "http://localhost:8888/auth/register",
-					"protocol": "http",
+					"raw": "{{baseURL}}/auth/register",
 					"host": [
-						"localhost"
+						"{{baseURL}}"
 					],
-					"port": "8888",
 					"path": [
 						"auth",
 						"register"
@@ -107,12 +103,10 @@
 					]
 				},
 				"url": {
-					"raw": "http://localhost:8888/auth/forgotPassword",
-					"protocol": "http",
+					"raw": "{{baseURL}}/auth/forgotPassword",
 					"host": [
-						"localhost"
+						"{{baseURL}}"
 					],
-					"port": "8888",
 					"path": [
 						"auth",
 						"forgotPassword"
@@ -159,12 +153,10 @@
 					]
 				},
 				"url": {
-					"raw": "http://localhost:8888/auth/resetPassword",
-					"protocol": "http",
+					"raw": "{{baseURL}}/auth/resetPassword",
 					"host": [
-						"localhost"
+						"{{baseURL}}"
 					],
-					"port": "8888",
 					"path": [
 						"auth",
 						"resetPassword"
