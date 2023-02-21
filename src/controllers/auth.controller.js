@@ -2,6 +2,7 @@ const userModel = require("../models/users.model");
 const resetPasswordModel = require("../models/resetPassword.model");
 const jwt = require("jsonwebtoken");
 const errorHandler = require("../helpers/errorHandler.helper");
+const {transport, mailOptions} = require("../helpers/mail.helper")
 
 exports.login = (req, res) => {
   userModel.selectUserByEmail(req.body.email, (err, { rows }) => {
@@ -37,8 +38,10 @@ exports.register = (req, res) => {
   });
 };
 
-exports.forgotPassword = (req, res) => {
+exports.forgotPassword = async (req, res) => {
+  try {
   const { email } = req.body;
+  const mailer = await transport()
   userModel.selectUserByEmail(email, (err, { rows: users }) => {
     if (err) {
       return errorHandler(err, res);
@@ -50,6 +53,7 @@ exports.forgotPassword = (req, res) => {
         userId: user.id,
         code: Math.ceil(Math.random() * 90000),
       };
+      mailer.sendMail(mailOptions(email, data.code))
       resetPasswordModel.insertResetPassword(data, (err, { rows: results }) => {
         if (results.length) {
           return res.status(200).json({
@@ -65,6 +69,13 @@ exports.forgotPassword = (req, res) => {
       });
     }
   });
+  } catch (err){
+    console.log(err)
+    return res.status(500).json({
+      success: false, 
+      message: 'Failed to request'
+    })
+  }
 };
 
 exports.resetPassword = (req, res) => {
