@@ -1,7 +1,9 @@
 const moviesRouter = require("express").Router();
-const { readAllMovies, readMovies, createMovies, updateMovies, deleteMovies, upcoming, nowShowing } = require("../controllers/movies.controller");
+const { readAllMovies, readMovies, createMovies, updateMovies, deleteMovies, upcoming, nowShowing, upcomingMovieSchedule } = require("../controllers/movies.controller");
 
 moviesRouter.get("/", readAllMovies);
+
+moviesRouter.get("/upcomingSchedule", upcomingMovieSchedule);
 
 moviesRouter.get("/upcoming", upcoming);
 

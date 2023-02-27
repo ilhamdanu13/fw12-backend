@@ -105,3 +105,17 @@ exports.nowShowing = (req, res) => {
     });
   });
 };
+
+exports.upcomingMovieSchedule = (req, res) => {
+  moviesModel.upcomingMovieSchedule((err, data) => {
+    if(err){
+      console.log(err)
+      return errorHandler(err, res)
+    }
+    return res.status(200).json({
+      success: true,
+      message: "Upcoming schedule movies",
+      results: data?.rows,
+    })
+  })
+}

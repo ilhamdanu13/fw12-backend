@@ -66,3 +66,13 @@ exports.nowShowing = (cb) => {
   WHERE current_date BETWEEN ms."startDate" AND ms."endDate" GROUP BY m.id, ms.id`;
   return db.query(sql, cb);
 };
+
+exports.upcomingMovieSchedule = (cb) => {
+  const sql = `SELECT m.id, m.title, m.picture, ms."startDate", ms."endDate", string_agg(g.name, ', ') AS genre
+  FROM movies m
+  JOIN "movieSchedules" ms ON ms."movieId" = m.id
+  LEFT JOIN "movieGenre" mg ON mg."movieId" = m.id
+  LEFT JOIN genre g ON g.id = mg."genreId"
+  WHERE m."releaseDate" > current_date GROUP BY m.id, ms.id`;
+  return db.query(sql, cb)
+}
